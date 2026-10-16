@@ -1,0 +1,33 @@
+from django.contrib import admin
+
+from .models import Owner, OwnershipEntry, Parcel
+
+
+class ReadOnlyAdmin(admin.ModelAdmin):
+    """Records are created only through services.py so that hashing and
+    validation can never be bypassed from the admin site."""
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Parcel)
+class ParcelAdmin(ReadOnlyAdmin):
+    list_display = ("khatian_no", "dag_no", "mouza", "upazila", "district", "area_decimal")
+    search_fields = ("khatian_no", "dag_no", "mouza")
+
+
+@admin.register(Owner)
+class OwnerAdmin(ReadOnlyAdmin):
+    list_display = ("full_name", "nid_last4", "created_at")
+    search_fields = ("full_name",)
+
+
+@admin.register(OwnershipEntry)
+class OwnershipEntryAdmin(ReadOnlyAdmin):
+    list_display = ("parcel", "seq", "hash", "created_at")
