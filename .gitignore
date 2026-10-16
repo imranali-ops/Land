@@ -4,3 +4,9 @@ __pycache__/
 .venv/
 staticfiles/
 db.sqlite3
+
+backups/
+*.log
+.DS_Store
+.env.*
+!.env.example
